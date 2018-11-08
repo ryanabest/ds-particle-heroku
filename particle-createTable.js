@@ -28,9 +28,15 @@ function tableQuery() {
       ,last_handshake_at timestamp with time zone
       ,device_id varchar(50)
       ,product_id int
+      ,date_added timestamp with time zone
 
     );
   `
+  return query;
+}
+
+function dropQuery() {
+  let query = 'DROP TABLE particle_temperature;';
   return query;
 }
 
@@ -48,7 +54,7 @@ function runQuery(client,query) {
 // Hello World
 function helloWorld() {
   console.log(process.env.AWS_PW);
-  client.query("SELECT '2018-11-07T21:45:35-05:00'::timestamp ,'2018-11-07T21:45:35-05:00'::TIMESTAMP WITH TIME ZONE as now", (err,res) => {
+  client.query("SELECT '1541650155699'::TIMESTAMP as now", (err,res) => {
     if (err) {
       console.log(err.stack)
     } else {

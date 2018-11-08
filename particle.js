@@ -34,7 +34,7 @@ function init() {
     setTimeout(function() {
       callAPI();
     }, 60000 * i);
-  } 
+  }
 }
 
 function callAPI() {
@@ -62,6 +62,7 @@ function callAPI() {
           }
 
           let query = particleQuery(particleData);
+          // console.log(query);
           runQuery(query);
 
         }
@@ -81,7 +82,7 @@ function callAPI() {
 
         function particleQuery(data) {
           let query = `
-            INSERT INTO particle_temperature (name,result,last_heard,last_handshake_at,device_id,product_id) VALUES
+            INSERT INTO particle_temperature (name,result,last_heard,last_handshake_at,device_id,product_id,date_added) VALUES
             (
                '`  + data.name + `'
                ,`  + data.result + `
@@ -89,6 +90,7 @@ function callAPI() {
                ,'` + data.last_handshake_at + `'::TIMESTAMP WITH TIME ZONE
                ,'` + data.device_id + `'
                ,`  + data.product_id + `
+               ,'` + new Date().toISOString() + `'::TIMESTAMP WITH TIME ZONE
             );
           `;
 
