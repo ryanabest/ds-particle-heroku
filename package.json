@@ -4,7 +4,7 @@
   "description": "Heroku app to push particle statistics to AWS RDS database",
   "main": "particle.js",
   "scripts": {
-    "test": "node particle.js"
+    "start": "node particle.js"
   },
   "repository": {
     "type": "git",
