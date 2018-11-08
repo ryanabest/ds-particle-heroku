@@ -23,6 +23,7 @@
   "homepage": "https://github.com/ryanabest/ds-particle-heroku#readme",
   "dependencies": {
     "nodemailer": "^4.6.8",
-    "pg": "^7.6.1"
+    "pg": "^7.6.1",
+    "request": "^2.88.0"
   }
 }
