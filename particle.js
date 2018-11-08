@@ -28,13 +28,7 @@ const transporter = nodemailer.createTransport({
 init();
 
 function init() {
-  // this loop will run once a minute 10 times
-  // I will set up a Heroku Scheduler to run this code every 10 minutes, ensuring that I will load one value per minute continuously throught the day
-  for (let i=0;i<9;i++) {
-    setTimeout(function() {
-      callAPI();
-    }, 60000 * i);
-  }
+  setTimeout(callAPI, 60000);
 }
 
 function callAPI() {
