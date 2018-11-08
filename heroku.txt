@@ -1,0 +1,8 @@
+heroku create ds-particle
+heroku config:set AWS_PW=xxx GMAIL=xxx PARTICLE=xxx
+git push heroku master
+heroku ps:scale web=0
+heroku scale worker=0
+heroku logs --tail
+heroku addons:create scheduler:standard
+heroku addons:open scheduler
