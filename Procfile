@@ -1,1 +1,1 @@
-particle: particle.js
+worker: node particle.js
