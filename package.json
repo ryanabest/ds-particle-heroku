@@ -1,0 +1,28 @@
+{
+  "name": "ds-particle-heroku",
+  "version": "1.0.0",
+  "description": "Heroku app to push particle statistics to AWS RDS database",
+  "main": "particle.js",
+  "scripts": {
+    "test": "node particle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryanabest/ds-particle-heroku.git"
+  },
+  "keywords": [
+    "api",
+    "heroku",
+    "node"
+  ],
+  "author": "Ryan Best",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryanabest/ds-particle-heroku/issues"
+  },
+  "homepage": "https://github.com/ryanabest/ds-particle-heroku#readme",
+  "dependencies": {
+    "nodemailer": "^4.6.8",
+    "pg": "^7.6.1"
+  }
+}
