@@ -26,10 +26,105 @@ const transporter = nodemailer.createTransport({
 init();
 
 function init() {
-  // let sample = JSON.parse(fs.readFileSync('assets/darksky_sample.json','utf8'));
-  // let todaysData = getToday(sample);
-  // writeData(todaysData);
   callAPI();
+
+  // let sample = JSON.parse(fs.readFileSync('assets/darksky_sample2.json','utf8'));
+  // let todaysData = getToday(sample);
+  // let hourlyData = getHourly(sample);
+  // writeAllHourData(hourlyData);
+  // writeDayData(todaysData);
+  // console.log(process.env.DARKSKY);
+}
+
+function runQuery(query) {
+  // console.log(query);
+  const client = createClient();
+  client.connect();
+  client.query(query, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+    } else {
+      console.log(res.rowCount);
+      client.end();
+    }
+  });
+}
+
+function getHourly(input) {
+
+  let hourlyData = [];
+  let rawData = input.hourly.data;
+  for (let r=0;r<rawData.length;r++) {
+    let today = new Date(),
+        day = new Date(0);
+
+    day.setUTCSeconds(rawData[r].time);
+    day.setHours(0);
+    day.setMinutes(0);
+    day.setSeconds(0);
+    day.setMilliseconds(0);
+
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
+
+    if(day.getTime()===today.getTime()) {
+      hourlyData.push(rawData[r]);
+    };
+  };
+  return hourlyData;
+}
+
+function writeAllHourData(allHourData) {
+  for (let h=0;h<allHourData.length;h++) {
+    writeHourData(allHourData[h]);
+  }
+}
+
+function writeHourData(rawData) {
+  let hourData = process(rawData);
+  let query = `
+    INSERT INTO darksky_hour (date_added,time,datetime,summary,precipIntensity,precipProbability,precipType,temperature,apparentTemperature,cloudCover,uvIndex)
+    VALUES
+    (
+       '` + hourData.date_added + `'::TIMESTAMP WITH TIME ZONE
+      ,` + hourData.time + `
+      ,'` + hourData.datetime + `'::TIMESTAMP WITH TIME ZONE
+      ,'` + hourData.summary + `'
+      ,` + hourData.precipIntensity + `
+      ,` + hourData.precipProbability + `
+      ,'` + hourData.precipType + `'
+      ,` + hourData.temperature + `
+      ,` + hourData.apparentTemperature + `
+      ,` + hourData.cloudCover + `
+      ,` + hourData.uvIndex + `
+    )`;
+
+  runQuery(query);
+
+  function process(rawData) {
+    let darkskyData,
+        datetime = new Date(0);
+
+    datetime.setUTCSeconds(rawData.time);
+
+    darkskyData = {
+      date_added: new Date().toISOString(),
+      time: rawData.time,
+      datetime: datetime.toISOString(),
+      summary: rawData.summary,
+      precipIntensity: rawData.precipIntensity,
+      precipProbability: rawData.precipProbability,
+      precipType: rawData.precipType,
+      temperature: rawData.temperature,
+      apparentTemperature: rawData.apparentTemperature,
+      cloudCover: rawData.cloudCover,
+      uvIndex: rawData.uvIndex
+    }
+
+    return darkskyData;
+  }
 }
 
 /////////////// Parse out today's data from the Dark Sky API output ///////////////
@@ -65,7 +160,7 @@ function getToday(input) {
 }
 
 //// Given an input which is today's data (a list), write it to the database ////
-function writeData(todaysData) {
+function writeDayData(todaysData) {
 
   let darkskyData = process(todaysData);
   insertData(darkskyData);
@@ -121,20 +216,6 @@ function writeData(todaysData) {
     `;
 
     runQuery(query);
-
-    function runQuery(query) {
-      // console.log(query);
-      const client = createClient();
-      client.connect();
-      client.query(query, (err, res) => {
-        if (err) {
-          console.log(err.stack);
-        } else {
-          console.log(res.rowCount);
-          client.end();
-        }
-      });
-    }
   }
 
   /////// Clean up the data and put it in a format my table is expecting ///////
@@ -224,7 +305,7 @@ function callAPI() {
   let lat = 40.6827819,
       lon = -73.9666949,
       darkSky = process.env.DARKSKY,
-      apiURL = "https://api.darksky.net/forecast/"+darkSky+"/"+lat+","+lon+"?units=si&exclude=currently,minutely,hourly";
+      apiURL = "https://api.darksky.net/forecast/"+darkSky+"/"+lat+","+lon+"?units=si&exclude=currently,minutely";
 
   request(apiURL, function(err,resp,body) {
     if (err) {
@@ -250,7 +331,9 @@ function callAPI() {
     else {
       let json = JSON.parse(body);
       let todaysData = getToday(json);
-      writeData(todaysData);
+      let hourlyData = getHourly(json);
+      writeDayData(todaysData);
+      writeAllHourData(hourlyData);
     }
   });
 }

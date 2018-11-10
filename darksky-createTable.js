@@ -13,9 +13,29 @@ init();
 
 function init() {
   client.connect();
-  let query = deleteQuery();
+  let query = hourTableQuery();
   runQuery(client,query);
   // helloWorld();
+}
+
+function hourTableQuery() {
+  let query = `
+  CREATE TABLE darksky_hour
+  (
+     date_added timestamp with time zone
+    ,time int
+    ,datetime timestamp with time zone
+    ,summary varchar(5000)
+    ,precipIntensity real
+    ,precipProbability real
+    ,precipType varchar(50)
+    ,temperature real
+    ,apparentTemperature real
+    ,cloudCover real
+    ,uvIndex int
+  )
+  `
+  return query;
 }
 
 function tableQuery() {
