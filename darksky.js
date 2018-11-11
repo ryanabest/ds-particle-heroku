@@ -55,23 +55,25 @@ function getHourly(input) {
   let hourlyData = [];
   let rawData = input.hourly.data;
   for (let r=0;r<rawData.length;r++) {
-    let today = new Date(),
-        day = new Date(0);
+    // let today = new Date(),
+    //     day = new Date(0);
+    //
+    // day.setUTCSeconds(rawData[r].time);
+    // day.setHours(0);
+    // day.setMinutes(0);
+    // day.setSeconds(0);
+    // day.setMilliseconds(0);
+    //
+    // today.setHours(0);
+    // today.setMinutes(0);
+    // today.setSeconds(0);
+    // today.setMilliseconds(0);
 
-    day.setUTCSeconds(rawData[r].time);
-    day.setHours(0);
-    day.setMinutes(0);
-    day.setSeconds(0);
-    day.setMilliseconds(0);
+    // if(day.getTime()===today.getTime()) {
+    //   hourlyData.push(rawData[r]);
+    // };
 
-    today.setHours(0);
-    today.setMinutes(0);
-    today.setSeconds(0);
-    today.setMilliseconds(0);
-
-    if(day.getTime()===today.getTime()) {
-      hourlyData.push(rawData[r]);
-    };
+    hourlyData.push(rawData[r]);
   };
   return hourlyData;
 }
@@ -101,7 +103,8 @@ function writeHourData(rawData) {
       ,` + hourData.uvIndex + `
     )`;
 
-  runQuery(query);
+  // runQuery(query);
+  console.log(query);
 
   function process(rawData) {
     let darkskyData,
@@ -215,7 +218,8 @@ function writeDayData(todaysData) {
       );
     `;
 
-    runQuery(query);
+    // runQuery(query);
+    console.log(query);
   }
 
   /////// Clean up the data and put it in a format my table is expecting ///////
@@ -305,7 +309,15 @@ function callAPI() {
   let lat = 40.6827819,
       lon = -73.9666949,
       darkSky = process.env.DARKSKY,
-      apiURL = "https://api.darksky.net/forecast/"+darkSky+"/"+lat+","+lon+"?units=si&exclude=currently,minutely";
+      today = new Date();
+
+      today.setHours(0);
+      today.setMinutes(0);
+      today.setSeconds(0);
+      today.setMilliseconds(0);
+
+  let time = Date.parse(today),
+      apiURL = "https://api.darksky.net/forecast/"+darkSky+"/"+lat+","+lon+","+time+"?units=si&exclude=currently,minutely";
 
   request(apiURL, function(err,resp,body) {
     if (err) {
