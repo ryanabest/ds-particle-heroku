@@ -316,7 +316,7 @@ function callAPI() {
       today.setSeconds(0);
       today.setMilliseconds(0);
 
-  let time = Date.parse(today),
+  let time = Date.parse(today)/1000,
       apiURL = "https://api.darksky.net/forecast/"+darkSky+"/"+lat+","+lon+","+time+"?units=si&exclude=currently,minutely";
 
   request(apiURL, function(err,resp,body) {
