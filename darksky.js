@@ -103,8 +103,7 @@ function writeHourData(rawData) {
       ,` + hourData.uvIndex + `
     )`;
 
-  // runQuery(query);
-  console.log(query);
+  runQuery(query);
 
   function process(rawData) {
     let darkskyData,
