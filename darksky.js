@@ -217,8 +217,7 @@ function writeDayData(todaysData) {
       );
     `;
 
-    // runQuery(query);
-    console.log(query);
+    runQuery(query);
   }
 
   /////// Clean up the data and put it in a format my table is expecting ///////
@@ -318,6 +317,8 @@ function callAPI() {
   let time = Date.parse(today)/1000,
       apiURL = "https://api.darksky.net/forecast/"+darkSky+"/"+lat+","+lon+","+time+"?units=si&exclude=currently,minutely";
 
+  // console.log(time);
+  // console.log(apiURL);
   request(apiURL, function(err,resp,body) {
     if (err) {
       function sendEmail(callback) {
