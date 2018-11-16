@@ -169,7 +169,7 @@ function writeDayData(todaysData) {
 
   function insertData(darkskyData) {
     let query = `
-      INSERT INTO darksky_forecast (date_added,forecast_date,forecast_time,summary,sunriseTime,sunriseDateTime,sunsetTime,sunsetDateTime,precipIntensity,precipIntensityMax,precipIntensityMaxTime,precipIntensityMaxDateTime,precipProbability,precipType,temperatureHigh,temperatureHighTime,temperatureHighDateTime,temperatureLow,temperatureLowTime,temperatureLowDateTime,apparentTemperatureHigh,apparentTemperatureHighTime,apparentTemperatureHighDateTime,apparentTemperatureLow,apparentTemperatureLowTime,apparentTemperatureLowDateTime,cloudCover,uvIndex,uvIndexTime,uvIndexDateTime,temperatureMin,temperatureMinTime,temperatureMinDateTime,temperatureMax,temperatureMaxTime,temperatureMaxDateTime,apparentTemperatureMin,apparentTemperatureMinTime,apparentTemperatureMinDateTime,apparentTemperatureMax,apparentTemperatureMaxTime,apparentTemperatureMaxDateTime)
+      INSERT INTO darksky_forecast (date_added,forecast_date,forecast_time,summary,sunriseTime,sunriseDateTime,sunsetTime,sunsetDateTime,precipIntensity,precipIntensityMax,precipProbability,precipType,temperatureHigh,temperatureHighTime,temperatureHighDateTime,temperatureLow,temperatureLowTime,temperatureLowDateTime,apparentTemperatureHigh,apparentTemperatureHighTime,apparentTemperatureHighDateTime,apparentTemperatureLow,apparentTemperatureLowTime,apparentTemperatureLowDateTime,cloudCover,uvIndex,uvIndexTime,uvIndexDateTime,temperatureMin,temperatureMinTime,temperatureMinDateTime,temperatureMax,temperatureMaxTime,temperatureMaxDateTime,apparentTemperatureMin,apparentTemperatureMinTime,apparentTemperatureMinDateTime,apparentTemperatureMax,apparentTemperatureMaxTime,apparentTemperatureMaxDateTime)
       VALUES
       (
           '` + darkskyData.date_added + `'::TIMESTAMP WITH TIME ZONE
@@ -182,8 +182,6 @@ function writeDayData(todaysData) {
           ,'` + darkskyData.sunsetDateTime + `'::TIMESTAMP WITH TIME ZONE
           ,` + darkskyData.precipIntensity + `
           ,` + darkskyData.precipIntensityMax + `
-          ,` + darkskyData.precipIntensityMaxTime + `
-          ,'` + darkskyData.precipIntensityMaxDateTime + `'::TIMESTAMP WITH TIME ZONE
           ,` + darkskyData.precipProbability + `
           ,'` + darkskyData.precipType + `'
           ,` + darkskyData.temperatureHigh + `
@@ -226,7 +224,7 @@ function writeDayData(todaysData) {
         forecastDate = new Date(0),
         sunriseDateTime = new Date(0),
         sunsetDateTime = new Date(0),
-        precipIntensityMaxDateTime = new Date(0),
+        // precipIntensityMaxDateTime = new Date(0),
         temperatureHighDateTime = new Date(0),
         temperatureLowDateTime = new Date(0),
         apparentTemperatureHighDateTime = new Date(0),
@@ -240,7 +238,7 @@ function writeDayData(todaysData) {
     forecastDate.setUTCSeconds(todaysData.time);
     sunriseDateTime.setUTCSeconds(todaysData.sunriseTime);
     sunsetDateTime.setUTCSeconds(todaysData.sunsetTime);
-    precipIntensityMaxDateTime.setUTCSeconds(todaysData.precipIntensityMaxTime);
+    // precipIntensityMaxDateTime.setUTCSeconds(todaysData.precipIntensityMaxTime);
     temperatureHighDateTime.setUTCSeconds(todaysData.temperatureHighTime);
     temperatureLowDateTime.setUTCSeconds(todaysData.temperatureLowTime);
     apparentTemperatureHighDateTime.setUTCSeconds(todaysData.apparentTemperatureHighTime);
@@ -263,8 +261,8 @@ function writeDayData(todaysData) {
       sunsetDateTime: sunsetDateTime.toISOString(),
       precipIntensity: todaysData.precipIntensity,
       precipIntensityMax: todaysData.precipIntensityMax,
-      precipIntensityMaxTime: todaysData.precipIntensityMaxTime,
-      precipIntensityMaxDateTime: precipIntensityMaxDateTime.toISOString(),
+      // precipIntensityMaxTime: todaysData.precipIntensityMaxTime,
+      // precipIntensityMaxDateTime: precipIntensityMaxDateTime.toISOString(),
       precipProbability: todaysData.precipProbability,
       precipType: todaysData.precipType,
       temperatureHigh: todaysData.temperatureHigh,
