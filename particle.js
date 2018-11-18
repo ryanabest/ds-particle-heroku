@@ -42,7 +42,26 @@ function callAPI() {
   let particleData
 
   request(apiURL, function(err,resp,body) {
-    if (err) {throw err;}
+    if (err) {
+      function sendEmail(callback) {
+        let mailOptions = {
+          from: 'ryan.a.best@gmail.com',
+          to: 'bestr008@newschool.edu',
+          subject: 'Particle Disconnected as of ' + new Date(),
+          text: 'Tried to push data from the particle on ' + new Date() + ' and got a failure:' + err
+        }
+
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Particle is not connected! Email sent: ' + info.response);
+          }
+        });
+      }
+
+      sendEmail(function() {throw "quitting"});
+    }
     else {
 
       let results = JSON.parse(body);
@@ -74,7 +93,7 @@ function callAPI() {
             if (err) {
               console.log(err.stack);
             } else {
-              console.log(res.rowCount);
+              // console.log(res.rowCount);
               client.end();
             }
           });
