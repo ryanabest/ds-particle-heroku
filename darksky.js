@@ -324,7 +324,7 @@ function callAPI() {
           from: 'ryan.a.best@gmail.com',
           to: 'bestr008@newschool.edu',
           subject: 'Darksky Forecast API Error as of ' + new Date(),
-          text: "Tried to get today's forecast data from Darksky today, specifically at " + new Date() + ', and got a failure.'
+          text: "Tried to get today's forecast data from Darksky today, specifically at " + new Date() + ', and got a failure:' + err
         }
 
         transporter.sendMail(mailOptions, function(error, info){
@@ -336,7 +336,7 @@ function callAPI() {
         });
       }
 
-      sendEmail(function() {throw err});
+      sendEmail(function() {throw "error, check email"});
     }
     else {
       let json = JSON.parse(body);
